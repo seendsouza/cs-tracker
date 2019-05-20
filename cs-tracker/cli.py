@@ -12,18 +12,17 @@ import graph
 
 def main():
     try:
-        ctx_obj = dict()
-        entry_point.main(prog_name='cs-tracker',obj=ctx_obj)
+        cli.main(prog_name='cs-tracker')
     except KeyboardInterrupt:
         click.echo('Aborted!')
 
 @click.group()
 @click.version_option(version="0.0.1")
-def entry_point():
+def cli():
     pass
 
-entry_point.add_command(add.add)
-entry_point.add_command(graph.graph)
+cli.add_command(add.add)
+cli.add_command(graph.graph)
 
 if __name__ == "__main__":
     main()
