@@ -4,6 +4,7 @@ add new training type
 add new session of entries
 """
 import os
+import time
 
 import click
 
@@ -12,8 +13,33 @@ def add():
     pass
 
 @add.command(help='entry')
-def entry():
-    pass
+@click.option('-v', '--verbose', is_flag = True, help='print a message for each created training type')
+@click.option('-d', '--directory', help='specify the session to put the training type in')
+@click.option('-f', '--filename', help='specify the session to put the training type in')
+@click.argument('cs')
+def entry(verbose, directory, filename, cs):
+    """Creates a new entry for existing training types
+
+    Creates a new entry by appending to a training type in cs-tracker/<session_name>/<training_type>.csv with the user's current time and CS
+
+    Args:
+        directory: name of the directory the session will be stored in
+        filename: name of the directory the session will be stored in
+        verbose: boolean of whether to print Directory Created
+        cs: number of cs obtained within training
+    Raises:
+        FileNotFoundError: 
+    """
+    try:
+        path = os.path.abspath(os.path.relpath('../data/{}/{}.csv'.format(directory, filename)))
+        data = "{},{}".format(time.time(), cs)
+        with open(path, 'a') as f:
+            f.write(data)
+        if verbose:
+            num_lines = sum(1 for _ in open(filename, 'rbU'))
+            click.echo("Entry Created on line {}".format(num_lines))
+    except FileNotFoundError:
+        click.echo("Cannot create an entry when the session does not exist: '{}'".format(directory))
 
 @add.command(help='training type')
 @click.option('-v', '--verbose', is_flag = True, help='print a message for each created training type')
