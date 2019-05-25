@@ -5,8 +5,19 @@ add new session of entries
 """
 import os
 import time
+import json
 
 import click
+
+default_directory = str()
+default_filename = str()
+config_data = dict()
+
+path = os.path.abspath(os.path.relpath('../data/config.json'))
+with open(path, "r") as f:
+    config_data = json.load(f)
+default_directory = config_data["default_directory"]
+default_filename = config_data["default_filename"]
 
 @click.group(help='')
 def add():
@@ -14,8 +25,8 @@ def add():
 
 @add.command(help='entry')
 @click.option('-v', '--verbose', is_flag = True, help='print a message for each created training type')
-@click.option('-d', '--directory', help='specify the session to put the training type in')
-@click.option('-f', '--filename', help='specify the session to put the training type in')
+@click.option('-d', '--directory', default = default_directory, help='specify the session to put the training type in')
+@click.option('-f', '--filename', default = default_filename, help='specify the session to put the training type in')
 @click.argument('cs')
 def entry(verbose, directory, filename, cs):
     """Creates a new entry for existing training types
@@ -43,7 +54,7 @@ def entry(verbose, directory, filename, cs):
 
 @add.command(help='training type')
 @click.option('-v', '--verbose', is_flag = True, help='print a message for each created training type')
-@click.option('-d', '--directory', help='specify the session to put the training type in')
+@click.option('-d', '--directory', default = default_directory, help='specify the session to put the training type in')
 @click.argument('filename')
 def training(verbose, directory, filename):
     """Creates a new training type
