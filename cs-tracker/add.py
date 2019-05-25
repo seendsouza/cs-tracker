@@ -56,7 +56,7 @@ def training(verbose, directory, filename):
 @add.command(help='create a new session to store training data')
 @click.option('-v', '--verbose', is_flag = True, help='print a message for each created directory')
 @click.argument('directory')
-def session(directory, verbose):
+def session(verbose, directory):
     """Creates a new session
 
     Creates a new session by creating a folder in cs-tracker/data with the user's custom directory name
