@@ -43,7 +43,7 @@ def entry(verbose, directory, filename, cs):
     """
     try:
         path = os.path.abspath(os.path.relpath('../data/{}/{}.csv'.format(directory, filename)))
-        data = "{},{}".format(time.time(), cs)
+        data = "\n{},{}".format(time.time(), cs)
         with open(path, 'a') as f:
             f.write(data)
         if verbose:
